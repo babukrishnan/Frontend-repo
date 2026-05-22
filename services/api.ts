@@ -2,7 +2,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
 const BASE_URL = "https://backend-repo-production-5c16.up.railway.app";
-// const BASE_URL = "http://192.168.18.175:8000";
 
 const api = axios.create({
   baseURL: `${BASE_URL}/api`,
