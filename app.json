@@ -12,11 +12,6 @@
       "supportsTablet": true
     },
     "android": {
-<<<<<<< HEAD
-      "package": "com.babukrishnan.farmerapp",
-      "googleServicesFile": "./google-services.json",
-=======
->>>>>>> c2b894484deeb01441fae8ee1dbb8145bcb37be3
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/images/logo-bg.png"
@@ -33,11 +28,7 @@
       [
         "expo-splash-screen",
         {
-<<<<<<< HEAD
           "image": "./assets/images/logo-bg.png",
-=======
-          "image": "./assets/images/splash-icon.png",
->>>>>>> c2b894484deeb01441fae8ee1dbb8145bcb37be3
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff",
@@ -45,25 +36,18 @@
             "backgroundColor": "#000000"
           }
         }
-<<<<<<< HEAD
       ],
-      "expo-web-browser",
-=======
-      ]
->>>>>>> c2b894484deeb01441fae8ee1dbb8145bcb37be3
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-<<<<<<< HEAD
     },
     "extra": {
       "router": {},
       "eas": {
         "projectId": "b2b8738b-8a67-40c2-9af3-0c582755e8b8"
       }
-=======
->>>>>>> c2b894484deeb01441fae8ee1dbb8145bcb37be3
     }
   }
 }
