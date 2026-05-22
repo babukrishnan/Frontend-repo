@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "604973002941",
+    "project_id": "farmer-marketplace-eabd0",
+    "storage_bucket": "farmer-marketplace-eabd0.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:604973002941:android:7e6f2e45cb4a363a8787d4",
+        "android_client_info": {
+          "package_name": "com.babukrishnan.farmerapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBghcEdmymnECAyLinpDoPZ1LMwdV_kmNY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
