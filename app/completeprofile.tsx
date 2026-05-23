@@ -18,9 +18,8 @@ import api from '@/services/api';
 export default function CompleteProfileScreen() {
 
   const [name, setName] = useState('');
-
+  const [phone, setPhone] = useState('');
   const [village, setVillage] = useState('');
-
   const [district, setDistrict] = useState('');
   const [farming, setFarming] = useState('')
   const [land_size, setLand] = useState('')
@@ -31,7 +30,7 @@ export default function CompleteProfileScreen() {
 
     // SIMPLE VALIDATION
 
-    if (!name || !village || !district) {
+    if (!name || !phone || !village || !district) {
 
       Alert.alert(
         'Error',
@@ -58,6 +57,7 @@ export default function CompleteProfileScreen() {
         '/create-profile/',
         {
           name,
+          phone,
           village,
           district,
           farming,
@@ -108,6 +108,15 @@ export default function CompleteProfileScreen() {
         value={name}
         onChangeText={setName}
         style={styles.input}
+      />
+
+      <TextInput
+        placeholder="Mobile Number"
+        value={phone}
+        onChangeText={setPhone}
+        style={styles.input}
+        keyboardType="phone-pad"
+        maxLength={10}
       />
 
       {/* VILLAGE */}
