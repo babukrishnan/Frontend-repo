@@ -97,7 +97,7 @@ export default function EditProfileScreen() {
 
     const result =
       await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ['images'],
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
         aspect: [1, 1],
         quality: 1,
@@ -129,10 +129,20 @@ export default function EditProfileScreen() {
 
       if (image && !image.startsWith('http')) {
 
+        const filename = image.split('/').pop();
+
+        const match = /\.(\w+)$/.exec(filename || '');
+
+        const type = match
+          ? `image/${match[1]}`
+          : `image`;
+
         formData.append('profile_image', {
-          uri: image,
-          name: 'profile.jpg',
-          type: 'image/jpeg',
+          uri: Platform.OS === 'ios'
+            ? image.replace('file://', '')
+            : image,
+          name: filename,
+          type,
         } as any);
 
       }

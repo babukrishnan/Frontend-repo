@@ -88,7 +88,7 @@ export default function AddEditProductScreen() {
 
     const result =
       await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ['images'],
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
         aspect: [1, 1],
         quality: 1,
@@ -140,21 +140,32 @@ export default function AddEditProductScreen() {
 
       // IMAGE
       if (image && !image.startsWith('http')) {
+        const filename = image.split('/').pop();
+
+        const match = /\.(\w+)$/.exec(filename || '');
+
+        const type = match
+          ? `image/${match[1]}`
+          : `image`;
+
         formData.append('image', {
-          uri: image,
-          name: 'product.jpg',
-          type: 'image/jpeg',
+          uri: Platform.OS === 'ios'
+            ? image.replace('file://', '')
+            : image,
+          name: filename,
+          type,
         } as any);
       }
 
       let response;
       // EDIT PRODUCT
       if (id) {
-        response = await api.put(`/products/${id}/`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        }
+        response = await api.put(`/products/${id}/`, formData, 
+        //   {
+        //   headers: {
+        //     'Content-Type': 'multipart/form-data',
+        //   },
+        // }
         );
       }  // ADD PRODUCT
       else {
@@ -165,11 +176,12 @@ export default function AddEditProductScreen() {
           );
           return;
         }
-        response = await api.post('/products/', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        }
+        response = await api.post('/products/', formData, 
+        //   {
+        //   headers: {
+        //     'Content-Type': 'multipart/form-data',
+        //   },
+        // }
         );
       }
       console.log(response.data);
