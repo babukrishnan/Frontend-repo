@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "farmer-app",
+    "name": "GLORIOSA FARMERS CONNECT",
     "slug": "farmer-app",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -16,8 +16,17 @@
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/images/logo-bg.png"
       },
+      "permissions": [
+        "READ_MEDIA_IMAGES",
+        "READ_EXTERNAL_STORAGE",
+        "CAMERA",
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "POST_NOTIFICATIONS"
+      ],
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.babukrishnan_1.farmerapp"
     },
     "web": {
       "output": "static",

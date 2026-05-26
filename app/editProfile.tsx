@@ -1,3 +1,6 @@
+import {
+  requestGalleryPermission,
+} from '@/services/permissions';
 import * as ImagePicker from 'expo-image-picker';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
@@ -84,16 +87,9 @@ export default function EditProfileScreen() {
   const pickImage = async () => {
 
     const permission =
-      await ImagePicker.requestMediaLibraryPermissionsAsync();
+      await requestGalleryPermission();
 
-    if (!permission.granted) {
-
-      Alert.alert(
-        'Permission required'
-      );
-
-      return;
-    }
+    if (!permission) return;
 
     const result =
       await ImagePicker.launchImageLibraryAsync({
