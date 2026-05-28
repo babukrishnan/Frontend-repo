@@ -33,6 +33,12 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "செங்காந்தள் needs your location to show weather updates."
+        }
+      ],
       "expo-router",
       [
         "expo-splash-screen",
