@@ -4,7 +4,7 @@ import * as ImagePicker from "expo-image-picker";
 
 import * as Location from "expo-location";
 
-import * as Notifications from "expo-notifications";
+import Constants from "expo-constants";
 
 // =======================================
 // COMMON SETTINGS ALERT
@@ -129,7 +129,14 @@ export const requestLocationPermission = async () => {
 // =======================================
 
 export const requestNotificationPermission = async () => {
+  // Android remote push notifications require a custom development build.
+  // Expo Go cannot load expo-notifications' push-token auto-registration.
+  if (Platform.OS === "android" && Constants.appOwnership === "expo") {
+    return false;
+  }
+
   try {
+    const Notifications = await import("expo-notifications");
     const { status: existingStatus } =
       await Notifications.getPermissionsAsync();
 
