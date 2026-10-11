@@ -1,81 +1,51 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
-const BASE_URL = "https://backend-repo-production-5c16.up.railway.app";
+// Expo includes EXPO_PUBLIC_ values in the client bundle. Never put API keys here.
+export const BASE_URL = (process.env.EXPO_PUBLIC_API_URL || "").trim().replace(/\/+$/, "");
+export const imagesURL = BASE_URL;
 
-const api = axios.create({
-  baseURL: `${BASE_URL}/api`,
+// Django returns /media/... in local development and absolute https URLs for
+// images stored in Cloudinary. Resolve both without corrupting remote URLs.
+export const imageUrl = (value?: string | null): string => {
+  if (!value) return "";
+  if (/^https?:\/\//i.test(value)) return value;
+  return BASE_URL + (value.startsWith("/") ? value : "/" + value);
+};
+
+const api = axios.create({ baseURL: BASE_URL ? `${BASE_URL}/api` : undefined, timeout: 75000 });
+
+api.interceptors.request.use(async (config) => {
+  if (!BASE_URL) {
+    return Promise.reject(new Error("Set EXPO_PUBLIC_API_URL in Frontend-repo/.env and restart Expo"));
+  }
+  if (!["/signup/", "/login/"].includes(config.url || "")) {
+    const token = await AsyncStorage.getItem("access");
+    if (token) config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
 });
 
-export const imagesURL = `${BASE_URL}`;
-
-api.interceptors.request.use(
-  async (config) => {
-    // SKIP TOKEN FOR AUTH APIS
-    const authRoutes = ["/signup/", "/login/"];
-
-    if (authRoutes.includes(config.url || "")) {
-      return config;
-    }
-
-    const token = await AsyncStorage.getItem("access");
-
-    console.log("AXIOS TOKEN:", token);
-
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-
-    return config;
-  },
-
-  (error) => {
-    return Promise.reject(error);
-  },
-);
-
-// RESPONSE INTERCEPTOR
 api.interceptors.response.use(
-  (response) => response,
-
-  async (error) => {
-    const originalRequest = error.config;
-
-    // TOKEN EXPIRED
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-
+  response => response,
+  async error => {
+    const request = error.config;
+    if (BASE_URL && error.response?.status === 401 && request && !request._retry
+      && !["/signup/", "/login/", "/token/refresh/"].includes(request.url || "")) {
+      request._retry = true;
+      const refresh = await AsyncStorage.getItem("refresh");
+      if (!refresh) return Promise.reject(error);
       try {
-        const refresh = await AsyncStorage.getItem("refresh");
-
-        // GET NEW ACCESS TOKEN
-
-        const response = await axios.post(`${BASE_URL}/api/token/refresh/`, {
-          refresh,
-        });
-
-        const newAccess = response.data.access;
-
-        // SAVE NEW TOKEN
-
-        await AsyncStorage.setItem("access", newAccess);
-
-        // RETRY FAILED REQUEST
-
-        originalRequest.headers.Authorization = `Bearer ${newAccess}`;
-
-        return api(originalRequest);
-      } catch (refreshError) {
-        // REFRESH FAILED
-
+        const response = await axios.post(`${BASE_URL}/api/token/refresh/`, { refresh }, { timeout: 75000 });
+        await AsyncStorage.setItem("access", response.data.access);
+        request.headers.Authorization = `Bearer ${response.data.access}`;
+        return api(request);
+      } catch {
         await AsyncStorage.multiRemove(["access", "refresh"]);
-
-        return Promise.reject(refreshError);
       }
     }
-
     return Promise.reject(error);
-  },
+  }
 );
 
 export default api;
