@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { Product } from '../../types/product';
 
-import api, { imagesURL } from '../../services/api';
+import api, { imageUrl } from '../../services/api';
 
 export default function ProductDetailScreen() {
 
@@ -87,7 +87,7 @@ export default function ProductDetailScreen() {
                 {/* Product Image */}
                 <Image
                     source={{
-                        uri: `${imagesURL}${product.image}`,
+                        uri: imageUrl(product.image),
                     }}
                     style={styles.productImage}
                 />
