@@ -1,4 +1,4 @@
-import api, { imagesURL } from '@/services/api';
+import api, { imageUrl } from '@/services/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
@@ -126,7 +126,7 @@ export default function ProfileScreen() {
           source={
             user.profile_image
               ? {
-                uri: `${imagesURL}${user.profile_image}`,
+                uri: imageUrl(user.profile_image),
               }
               : require('../../assets/images/user.png')
           }
