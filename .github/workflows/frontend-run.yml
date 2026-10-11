@@ -1,0 +1,44 @@
+name: Frontend run checks
+on:
+  push:
+    branches:
+      - feature/client-ready-marketplace
+  workflow_dispatch:
+
+jobs:
+  expo-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Check TypeScript
+        run: npx tsc --noEmit
+      - name: Export Expo web bundle
+        run: npx expo export --platform web --output-dir dist
+      - name: Serve frontend and check HTTP
+        run: |
+          python3 -m http.server 19006 --bind 127.0.0.1 --directory dist > /tmp/expo-web.log 2>&1 &
+          server_pid=$!
+          trap 'kill $server_pid || true' EXIT
+          for attempt in 1 2 3 4 5 6 7 8 9 10; do
+            if curl --fail --silent --show-error http://127.0.0.1:19006/ -o /tmp/frontend-response.html; then
+              grep -qi '<html' /tmp/frontend-response.html
+              echo 'Expo web HTTP check passed'
+              exit 0
+            fi
+            sleep 2
+          done
+          tail -n 40 /tmp/expo-web.log
+          exit 1
+      - name: Save web build for preview
+        uses: actions/upload-artifact@v4
+        with:
+          name: sengandhal-web-preview
+          path: dist
+          retention-days: 7

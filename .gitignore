@@ -10,3 +10,8 @@ ios/
 expo-env.d.ts
 # @end expo-cli
 .vercel
+
+# Expo local API endpoint (may vary by developer)
+.env
+.env.local
+.env.*.local

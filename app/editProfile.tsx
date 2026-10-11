@@ -21,7 +21,7 @@ import {
   View,
 } from 'react-native';
 
-import api, { imagesURL } from '../services/api';
+import api, { imageUrl } from '../services/api';
 
 export default function EditProfileScreen() {
 
@@ -71,7 +71,7 @@ export default function EditProfileScreen() {
       if (data.profile_image) {
 
         setImage(
-          `${imagesURL}${data.profile_image}`
+          imageUrl(data.profile_image)
         );
       }
 

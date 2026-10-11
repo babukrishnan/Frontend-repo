@@ -1,7 +1,7 @@
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Image, RefreshControl, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import api, { imagesURL } from '../../services/api';
+import api, { imageUrl } from '../../services/api';
 import { Product } from '../../types/product';
 
 export default function MarketScreen() {
@@ -95,7 +95,7 @@ export default function MarketScreen() {
                 >
                     <Image
                         source={{
-                            uri: `${imagesURL}${product.image}`,
+                            uri: imageUrl(product.image),
                         }}
                         style={styles.productImage}
                     />

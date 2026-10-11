@@ -17,7 +17,7 @@ import {
   View,
 } from 'react-native';
 
-import api, { imagesURL } from '../services/api';
+import api, { imageUrl } from '../services/api';
 
 export default function AddEditProductScreen() {
 
@@ -59,7 +59,7 @@ export default function AddEditProductScreen() {
       setPhone(product.phone);
 
       if (product.image) {
-        setImage(`${imagesURL}${product.image}`);
+        setImage(imageUrl(product.image));
       }
     } catch (error) {
       console.log(error);
