@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 
 import { router } from 'expo-router';
-import api, { imagesURL } from '../services/api';
+import api, { imageUrl } from '../services/api';
 
 export default function MyProductsScreen() {
 
@@ -56,7 +56,7 @@ export default function MyProductsScreen() {
 
             <Image
                 source={{
-                    uri: `${imagesURL}${item.image}`,
+                    uri: imageUrl(item.image),
                 }}
                 style={styles.image}
             />
